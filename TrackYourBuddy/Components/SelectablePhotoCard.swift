@@ -8,8 +8,39 @@
 import SwiftUI
 
 struct SelectablePhotoCard: View {
+    @State private var selectedImage: UIImage? = nil
+    @State private var isImagePickerPresented = false
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            if let image = selectedImage {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200, height: 200)
+                    .cornerRadius(10)
+            } else {
+                Button(action: {
+                    isImagePickerPresented = true
+                }) {
+                    VStack {
+                        Image(systemName: "photo")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 60, height: 60)
+                            .foregroundColor(.white)
+                        Text("Gelişim Fotoğrafı\nSeç")
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(.white)
+                    }
+                    .frame(width: 200, height: 150)
+                    
+                }
+                .sheet(isPresented: $isImagePickerPresented) {
+                    ImagePicker(selectedImage: $selectedImage)
+                }
+            }
+        }
     }
 }
 
